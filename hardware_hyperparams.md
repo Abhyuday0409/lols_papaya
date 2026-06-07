@@ -1,7 +1,5 @@
 # Hardware, Hyperparameters, and Efficiency Reference
 
-This document consolidates all configuration tables and timing benchmarks from the paper appendix. Numbers here correspond directly to Tables XII–XV in the paper and are provided to support exact reproduction of reported results.
-
 ---
 
 ## Hardware and Software Environment
