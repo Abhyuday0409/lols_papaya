@@ -34,22 +34,6 @@ Where masks are not provided, an 80/10/10 train/validation/test split is used.
 
 ---
 
-## Table XIII — DBSCAN Clusters Discovered per Dataset
-
-Final cluster count and the `ε` value selected via grid search on the validation set. Embeddings are L2-normalised prior to DBSCAN so all distances lie in [0, 2].
-
-| Dataset | # Clusters (*L*) | ε |
-|---------|:----------------:|:---:|
-| Actor | 3 | 0.30 |
-| PubMed | 4 | 0.25 |
-| Amazon-Photo | 5 | 0.30 |
-| Coauthor CS | 6 | 0.25 |
-| Flickr | 4 | 0.30 |
-| Questions | 3 | 0.25 |
-| Amazon Ratings | 4 | 0.30 |
-
----
-
 ## DBSCAN ε Sensitivity Analysis
 
 A common question is how sensitive MIDAS is to the choice of ε. Two things are worth clarifying upfront:
