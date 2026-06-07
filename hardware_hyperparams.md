@@ -10,9 +10,9 @@ This document consolidates all configuration tables and timing benchmarks from t
 |---|---|
 | **Framework** | PyTorch 1.12.0, Python 3.11, DGL |
 | **Training device** | NVIDIA A100-SXM4-80GB, CUDA 12.2 |
-| **CPU inference device** | Apple M4 Max |
+| **CPU device** | Apple M4 Max |
 
-All accuracy numbers in the paper are averaged over ten independent seeds. Inference latency figures are CPU-only and averaged over five seeds.
+All accuracy numbers in the paper are averaged over ten independent seeds. Training times are measured on the A100. CPU latency figures are additionally reported to characterise inference behaviour independent of GPU availability; both sets of measurements are included in Table XIV.
 
 ---
 
@@ -31,6 +31,22 @@ Per-dataset hidden dimensions, layer counts, and feature mask settings. `S` = st
 | Amazon Ratings | 256 | 2 | 256 | 3 | 10 |
 
 Where masks are not provided, an 80/10/10 train/validation/test split is used.
+
+---
+
+## Table XIII — DBSCAN Clusters Discovered per Dataset
+
+Final cluster count and the `ε` value selected via grid search on the validation set. Embeddings are L2-normalised prior to DBSCAN so all distances lie in [0, 2].
+
+| Dataset | # Clusters (*L*) | ε |
+|---------|:----------------:|:---:|
+| Actor | 3 | 0.30 |
+| PubMed | 4 | 0.25 |
+| Amazon-Photo | 5 | 0.30 |
+| Coauthor CS | 6 | 0.25 |
+| Flickr | 4 | 0.30 |
+| Questions | 3 | 0.25 |
+| Amazon Ratings | 4 | 0.30 |
 
 ---
 
@@ -95,7 +111,7 @@ The plateau from ε = 0.25 to 0.50 (variance < 0.008) is the stable region. Belo
 
 ## Table XIV — End-to-End Training Cost and Inference Speedup
 
-Training times are in seconds and measured on the A100. Struc2Vec is a **one-time offline preprocessing step** whose cost is amortised across all subsequent runs and seeds. Inference times are CPU-only in milliseconds.
+Training times are in seconds, measured on the A100. Struc2Vec is a **one-time offline preprocessing step** whose cost is amortised across all subsequent runs and seeds. CPU latency figures are included to provide a hardware-agnostic lower-bound characterisation of inference cost.
 
 ### Training cost (seconds)
 
@@ -110,7 +126,7 @@ Training times are in seconds and measured on the A100. Struc2Vec is a **one-tim
 
 Total MIDAS training cost is comparable to training three separate GNN teachers (3× single-teacher cost), with the Struc2Vec step paid only once.
 
-### Inference (CPU-only, milliseconds)
+### Inference latency (CPU, milliseconds)
 
 | Method | Actor | PubMed | Co-CS | A-Photo |
 |--------|------:|-------:|------:|--------:|
@@ -142,7 +158,29 @@ Theoretical operation counts and empirical/estimated preprocessing times under e
 
 ---
 
-## Full Hyperparameter Search Space
+## Hyperparameter Search Space (Paper)
+
+The following search space was used to produce all results reported in the paper. Selection was performed via grid search on the validation set. An 80/10/10 train/validation/test split was used for datasets where pre-defined masks are not provided.
+
+| Hyperparameter | Search values |
+|----------------|--------------|
+| Hidden dim | 256 |
+| Adapter bottleneck | 64 |
+| Layers | {2, 3} |
+| Temperature τ | {2, 4, 8} |
+| Confidence threshold | {0.1, 0.3, 0.5} |
+| λ₁ (center loss weight) | {0.001, 0.01, 0.1} |
+| λ₂ (CE loss weight) | {0.5, 0.7, 1.0} |
+| Optimizer | {Adam, SGD} |
+| Activation | {Tanh, GELU} |
+| Learning rate | {0.001, 0.005, 0.01} |
+| Struc2Vec dim | {64, 128, 256} |
+| DBSCAN ε | {0.2, 0.3, 0.4, 0.5} |
+| DBSCAN MinPts | 10 |
+
+---
+
+## Script-Level Defaults and Tuning Ranges
 
 All hyperparameters are defined as named constants at the top of each script. The defaults below reproduce the paper results on Actor. Ranges listed are recommended starting points for adaptation to new datasets. Final values for each dataset were selected via grid search on the validation set.
 
