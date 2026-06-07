@@ -3,7 +3,7 @@
 Reproducibility guide for the ICDM 2026 paper  
 *MIDAS: Multi-Teacher Instruction-Driven Distillation with Adaptive Structure-Aware Embeddings*
 
-This repository provides a self-contained implementation intended for both **research reproduction** and **industrial adaptation**. Every design choice, hyperparameter, and tuning range described here maps directly to a section of the paper.
+This repository provides a self-contained implementation intended for both **research reproduction** and **industrial adaptation**. Refer to [`hardware_and_hyperparams.md`](hardware_and_hyperparams.md) for full details on hardware environment, per-dataset network configurations, training cost breakdowns, inference benchmarks, DBSCAN ε sensitivity analysis, and the complete hyperparameter search space.
 
 ---
 
@@ -141,19 +141,4 @@ student_results.csv
 │   # generated after Step 3
 ├── best_student_seed{N}.pth
 └── student_results.csv
-```
-
----
-
-## Citation
-
-If you use this code, please cite:
-
-```bibtex
-@inproceedings{midas2026icdm,
-  title     = {MIDAS: Multi-Teacher Instruction-Driven Distillation with
-               Adaptive Structure-Aware Embeddings},
-  booktitle = {Proceedings of the IEEE International Conference on Data Mining (ICDM)},
-  year      = {2026},
-}
 ```
